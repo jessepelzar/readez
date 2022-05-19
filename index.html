@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <title>Readez</title>
+  </head>
+  <body>
+    <div class="container my-5">
+      <div class="text-center">
+        <h1 class="display-4 text-center mb-3">Read EZ</h1>
+        <textarea placeholder="enter your text here" class="form-control" id="input-text" rows="4"></textarea>
+        <button class="btn btn-primary my-3" id="get">convert</button>
+        <!-- <p id="output-text">eNullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.</p> -->
+      </div>
+      <hr />
+      <div id="res"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script>
+        function readBetter() {
+            const encodedParams = new URLSearchParams();
+            encodedParams.append("content", document.getElementById("input-text").value);
+            encodedParams.append("response_type", "html");
+            encodedParams.append("request_type", "html");
+            encodedParams.append("fixation", "1");
+            encodedParams.append("saccade", "10");
+
+            const options = {
+            method: 'POST',
+            url: 'https://bionic-reading1.p.rapidapi.com/convert',
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'X-RapidAPI-Host': 'bionic-reading1.p.rapidapi.com',
+                'X-RapidAPI-Key': 'c5a40ab463msh04a8836e05a8a06p15f7b8jsnd3fe56ce5f01'
+            },
+            data: encodedParams
+            };
+            
+            axios.request(options)
+            .then(res => showOutput(res.data))
+            .catch(err => console.error(err));
+        }
+
+        function showOutput(res) {
+            document.getElementById('res').innerHTML = `
+            <div class="card mt-3">
+                <div class="card-header">
+                results
+                </div>
+                <div class="card-body">
+                <p>${res}</p>
+                </div>
+            </div>
+            `;
+        }
+        
+        document.getElementById('get').addEventListener('click', readBetter);
+    </script>
+  </body>
+</html>
